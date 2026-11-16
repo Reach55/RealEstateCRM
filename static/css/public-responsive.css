@@ -16,6 +16,12 @@ html {
     outline-offset: 3px;
 }
 
+.property-detail-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
 .listing-image img,
 .result-image img {
     object-fit: contain;
@@ -147,7 +153,9 @@ html {
     }
 
     .listing-image {
-        aspect-ratio: 16 / 10;
+        /* Match the uploaded property photos so contain can show the full image
+           without leaving side gutters on phones. */
+        aspect-ratio: 4 / 3;
     }
 
     .listing-badge {
@@ -211,7 +219,7 @@ html {
     }
 
     .result-image {
-        aspect-ratio: 16 / 10;
+        aspect-ratio: 4 / 3;
     }
 
     .result-info {

@@ -1,5 +1,5 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from properties.models import Property
 from django.db.models import Q
 
@@ -135,4 +135,23 @@ def property_search(request):
 
     return render(request, 'website/property_search.html', {
         'properties': properties,
+    })
+
+
+def property_detail(request, pk):
+    property_obj = get_object_or_404(
+        Property.objects.prefetch_related('photos'),
+        pk=pk,
+        status__in=['AVAILABLE', 'SOLD'],
+    )
+    gallery_photos = []
+    if property_obj.image:
+        gallery_photos.append({'url': property_obj.image.url, 'caption': property_obj.title})
+    gallery_photos.extend(
+        {'url': photo.image.url, 'caption': photo.caption or property_obj.title}
+        for photo in property_obj.photos.all()
+    )
+    return render(request, 'website/property_detail.html', {
+        'property': property_obj,
+        'gallery_photos': gallery_photos,
     })

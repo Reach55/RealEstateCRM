@@ -1,0 +1,55 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ property.title }} | LGS Cambodia</title>
+  <link rel="stylesheet" href="{% static 'css/public-responsive.css' %}">
+  <style>
+    :root{--ink:#17243a;--blue:#267eff;--muted:#69788d;--line:#e5ebf3;--paper:#f4f7fc}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+    a{color:inherit}.detail-nav{height:68px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 max(5vw,20px);border-bottom:1px solid var(--line)}
+    .brand{text-decoration:none;font-weight:850;letter-spacing:.1em}.brand span{color:var(--blue)}.back-link{color:var(--blue);font-weight:700;text-decoration:none}
+    .detail-page{width:min(1120px,100% - 40px);margin:34px auto 64px}.gallery{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(180px,.8fr);gap:12px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 34px #1734550c}
+    .gallery-main{position:relative;min-height:420px;border-radius:12px;overflow:hidden;background:#edf2f8}.gallery-main img{display:block;width:100%;height:100%;min-height:420px;object-fit:contain}.gallery-thumbs{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(120px,1fr);gap:10px;align-content:start;max-height:520px;overflow:auto}
+    .gallery-thumb{position:relative;padding:0;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#edf2f8;cursor:pointer;min-height:120px}.gallery-thumb.active{border-color:var(--blue)}.gallery-thumb img{display:block;width:100%;height:100%;min-height:120px;object-fit:cover}.gallery-count{position:absolute;right:14px;bottom:14px;padding:8px 11px;border-radius:9px;background:#17243add;color:#fff;font-size:13px;font-weight:700}
+    .detail-content{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;margin-top:24px}.detail-main,.price-panel{padding:26px;background:#fff;border:1px solid var(--line);border-radius:16px}.eyebrow{color:var(--blue);text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:800}.detail-main h1{font-size:clamp(26px,4vw,38px);line-height:1.15;letter-spacing:-.04em;margin:9px 0}.house-id{display:inline-block;padding:7px 10px;border-radius:8px;background:#eaf2ff;color:var(--blue);font-weight:800;font-size:13px}.location{color:var(--muted);margin:12px 0 0}.features{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:22px 0}.feature{padding:14px 10px;border:1px solid var(--line);border-radius:10px;text-align:center;color:var(--muted);font-size:12px}.feature b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}.description{border-top:1px solid var(--line);padding-top:18px;color:#536278;line-height:1.75;white-space:pre-line}.price-panel{height:max-content}.price{font-size:30px;color:var(--blue);font-weight:850;letter-spacing:-.03em}.status{display:inline-block;margin:8px 0 18px;padding:7px 10px;border-radius:99px;background:#e8f8ed;color:#16803d;font-size:12px;font-weight:800}.status.sold{background:#edf0f5;color:#52627a}.contact-btn{display:flex;min-height:48px;align-items:center;justify-content:center;background:var(--blue);color:#fff;text-decoration:none;border-radius:9px;font-weight:800}.empty-gallery{display:grid;place-items:center;min-height:420px;color:var(--muted)}
+    @media(max-width:700px){.detail-nav{height:auto;min-height:60px;padding:12px 16px}.detail-page{width:calc(100% - 24px);margin:18px auto 40px}.gallery{grid-template-columns:1fr;gap:9px;padding:8px;border-radius:14px}.gallery-main,.gallery-main img{min-height:0;height:auto;aspect-ratio:4/3}.gallery-thumbs{display:flex;max-height:none;overflow-x:auto;padding-bottom:3px}.gallery-thumb,.gallery-thumb img{flex:0 0 104px;width:104px;height:78px;min-height:78px}.detail-content{grid-template-columns:1fr;gap:12px;margin-top:14px}.detail-main,.price-panel{padding:19px}.features{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.price-panel{order:-1}.price{font-size:26px}.empty-gallery{min-height:220px}}
+  </style>
+</head>
+<body>
+  <nav class="detail-nav"><a class="brand" href="/">LGS <span>CAMBODIA</span></a><a class="back-link" href="{% url 'property_search' %}">Browse all properties</a></nav>
+  <main class="detail-page">
+    <section class="gallery" aria-label="Property photo gallery">
+      <div class="gallery-main">
+        {% if gallery_photos %}<img id="main-photo" src="{{ gallery_photos.0.url }}" alt="{{ gallery_photos.0.caption }}">
+        {% else %}<div class="empty-gallery">Photos for this property are coming soon.</div>{% endif %}
+        {% if gallery_photos|length > 1 %}<span class="gallery-count"><span id="photo-index">1</span> / {{ gallery_photos|length }} photos</span>{% endif %}
+      </div>
+      {% if gallery_photos|length > 1 %}<div class="gallery-thumbs" aria-label="Choose a property photo">
+        {% for photo in gallery_photos %}<button class="gallery-thumb{% if forloop.first %} active{% endif %}" type="button" data-photo="{{ photo.url }}" data-caption="{{ photo.caption|escape }}" aria-label="Show photo {{ forloop.counter }}"><img src="{{ photo.url }}" alt=""></button>{% endfor %}
+      </div>{% endif %}
+    </section>
+    <section class="detail-content">
+      <article class="detail-main">
+        <span class="eyebrow">{{ property.get_listing_type_display }} · {{ property.get_property_type_display }}</span>
+        <h1>{{ property.title }}</h1>
+        <span class="house-id">House ID · {{ property.house_id }}</span>
+        <p class="location">{{ property.commune }}{% if property.commune %}, {% endif %}{{ property.district }}{% if property.district %}, {% endif %}{{ property.city|default:property.location }}</p>
+        <div class="features"><div class="feature"><b>{{ property.bedrooms }}</b>Bedrooms</div><div class="feature"><b>{{ property.bathrooms }}</b>Bathrooms</div><div class="feature"><b>{{ property.area|floatformat:0 }} m²</b>House area</div><div class="feature"><b>{{ property.land_size|floatformat:0 }} m²</b>Land size</div></div>
+        {% if property.description %}<div class="description">{{ property.description }}</div>{% endif %}
+        {% if property.features %}<div class="description"><strong>Features</strong><br>{{ property.features }}</div>{% endif %}
+      </article>
+      <aside class="price-panel"><div class="price">${% if property.listing_type == 'RENT' %}{{ property.monthly_rent|floatformat:0 }} <small>/ month</small>{% else %}{{ property.price|floatformat:0 }}{% endif %}</div><span class="status{% if property.status == 'SOLD' %} sold{% endif %}">{{ property.get_status_display }}</span><a class="contact-btn" href="/#contact">Contact our team</a></aside>
+    </section>
+  </main>
+  <script>
+    const mainPhoto=document.getElementById('main-photo');
+    document.querySelectorAll('.gallery-thumb').forEach((button,index)=>button.addEventListener('click',()=>{
+      mainPhoto.src=button.dataset.photo;mainPhoto.alt=button.dataset.caption;
+      document.querySelectorAll('.gallery-thumb').forEach(item=>item.classList.remove('active'));
+      button.classList.add('active');document.getElementById('photo-index').textContent=index+1;
+    }));
+  </script>
+</body>
+</html>
