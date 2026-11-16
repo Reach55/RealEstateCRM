@@ -31,6 +31,18 @@ If this is a new local Git repository, configure your commit identity first, the
 3. Render builds and deploys the app. Open the generated `.onrender.com` address and sign in with the administrator credentials.
 4. Test the complete workflow: add a property and photo, view it on the public listing page, search it by its house ID, add a sample customer, and check sales/rentals and reports.
 
+## Deploy on PythonAnywhere
+
+The production settings enable WhiteNoise whenever `DEBUG=false`, so WhiteNoise must be installed in the same Python environment used by the PythonAnywhere web app. This project is configured to use `/home/reach55/.virtualenvs/realestate-env`. From a Bash console, run:
+
+```bash
+cd ~/RealEstateCRM
+source ~/.virtualenvs/realestate-env/bin/activate
+python -m pip install -r requirements.txt
+```
+
+If your PythonAnywhere Web tab uses a different virtualenv, replace the activation path with that virtualenv's `bin/activate` path. Then open the Web tab and click **Reload**. The `whitenoise>=6.9,<7` requirement is already included in `requirements.txt`; if the import error remains, confirm the Web tab and Bash console are using the same virtualenv.
+
 ## Free-plan limits
 
 This is suitable for a demo, not production use. Render's free web service sleeps after 15 minutes without traffic, so the first visit can take about a minute to wake. Supabase Free currently includes 500 MB of database space and 1 GB of file storage; an inactive project can pause after a week. Check each provider's dashboard for current limits.

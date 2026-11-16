@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import dj_database_url
 from pathlib import Path
 import os
+from importlib.util import find_spec
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,8 +82,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+WHITENOISE_AVAILABLE = find_spec('whitenoise') is not None
+
 if not DEBUG:
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    if WHITENOISE_AVAILABLE:
+        MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -178,7 +182,7 @@ STORAGES = {
     'staticfiles': {
         'BACKEND': (
             'whitenoise.storage.CompressedManifestStaticFilesStorage'
-            if not DEBUG
+            if not DEBUG and WHITENOISE_AVAILABLE
             else 'django.contrib.staticfiles.storage.StaticFilesStorage'
         ),
     },
