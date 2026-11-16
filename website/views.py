@@ -154,4 +154,9 @@ def property_detail(request, pk):
     return render(request, 'website/property_detail.html', {
         'property': property_obj,
         'gallery_photos': gallery_photos,
+        'similar_properties': Property.objects.filter(
+            status='AVAILABLE',
+            listing_type=property_obj.listing_type,
+            property_type=property_obj.property_type,
+        ).exclude(pk=property_obj.pk).order_by('-created_at')[:3],
     })
