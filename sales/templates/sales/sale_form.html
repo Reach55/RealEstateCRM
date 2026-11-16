@@ -46,7 +46,7 @@
             <div>
                 <span class="eyebrow">LGS CAMBODIA</span>
                 <h1>{{ title }}</h1>
-                <p>Find the house by its ID, confirm the listing, and record the sale.</p>
+                <p>Select an available listing, match it with your client, and save the transaction details.</p>
             </div>
             <a class="back-btn" href="{% url 'sale_list' %}">Back to sales</a>
         </header>
@@ -60,21 +60,6 @@
                         <div class="sale-field{% if field.name == 'notes' %} full-width{% endif %}">
                             <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="required-mark" aria-hidden="true">*</span>{% endif %}</label>
                             {{ field }}
-                            {% if field.name == 'property' %}
-                                <datalist id="house-id-options">
-                                    {% for house in form.available_properties %}
-                                        <option value="{{ house.house_id }}" label="{{ house.house_id }} · {{ house.title }} · {{ house.district }} · ${{ house.price|floatformat:0 }}" data-title="{{ house.title }}" data-location="{{ house.district }}{% if house.city %}, {{ house.city }}{% endif %}" data-price="{{ house.price|floatformat:0 }}"{% if house.image %} data-photo="{{ house.image.url }}"{% endif %}></option>
-                                    {% endfor %}
-                                </datalist>
-                                <div class="house-preview" id="house-preview" hidden aria-live="polite">
-                                    <img id="house-preview-photo" alt="Selected house">
-                                    <div class="house-preview-copy">
-                                        <strong id="house-preview-title"></strong>
-                                        <span id="house-preview-id"></span>
-                                        <span id="house-preview-details"></span>
-                                    </div>
-                                </div>
-                            {% endif %}
                             {% if field.help_text %}<small class="sale-help">{{ field.help_text }}</small>{% endif %}
                             {% for error in field.errors %}<small class="sale-error">{{ error }}</small>{% endfor %}
                         </div>
@@ -82,47 +67,10 @@
                 </div>
                 <div class="sale-actions">
                     <a href="{% url 'sale_list' %}">Cancel</a>
-                    <button type="submit">Save Sale</button>
+                    <button type="submit">Record sale</button>
                 </div>
             </form>
         </section>
     </main>
-
-    <script>
-        const houseInput = document.getElementById('id_property');
-        const houseOptions = Array.from(document.querySelectorAll('#house-id-options option'));
-        const housePreview = document.getElementById('house-preview');
-        const housePhoto = document.getElementById('house-preview-photo');
-        const houseTitle = document.getElementById('house-preview-title');
-        const houseId = document.getElementById('house-preview-id');
-        const houseDetails = document.getElementById('house-preview-details');
-        const salePrice = document.getElementById('id_selling_price');
-
-        function showSelectedHouse() {
-            const searchId = houseInput.value.trim().toUpperCase();
-            const house = houseOptions.find(option => option.value.toUpperCase() === searchId);
-            if (!house) {
-                housePreview.hidden = true;
-                return;
-            }
-
-            houseTitle.textContent = house.dataset.title;
-            houseId.textContent = house.value;
-            houseDetails.textContent = `${house.dataset.location} · $${house.dataset.price}`;
-            if (house.dataset.photo) {
-                housePhoto.src = house.dataset.photo;
-                housePhoto.hidden = false;
-            } else {
-                housePhoto.removeAttribute('src');
-                housePhoto.hidden = true;
-            }
-            housePreview.hidden = false;
-            if (!salePrice.value) salePrice.value = house.dataset.price;
-        }
-
-        houseInput.addEventListener('input', showSelectedHouse);
-        houseInput.addEventListener('change', showSelectedHouse);
-        showSelectedHouse();
-    </script>
 </body>
 </html>

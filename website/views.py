@@ -6,7 +6,11 @@ from django.db.models import Q
 
 def home(request):
     featured_properties = Property.objects.filter(status='AVAILABLE').order_by('-created_at')[:6]
-    return render(request, 'website/home.html', {'featured_properties': featured_properties})
+    sold_properties = Property.objects.filter(status='SOLD').order_by('-created_at')
+    return render(request, 'website/home.html', {
+        'featured_properties': featured_properties,
+        'sold_properties': sold_properties,
+    })
 
 
 def property_search(request):

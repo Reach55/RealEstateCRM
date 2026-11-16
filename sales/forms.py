@@ -1,19 +1,24 @@
 from django import forms
-import re
 
 from .models import Sale
 from properties.models import Property
 
 
+class SalePropertyChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, property_obj):
+        location = property_obj.district or property_obj.city or property_obj.location
+        return (
+            f'{property_obj.house_id} · {property_obj.title} · '
+            f'{location} · ${property_obj.price:,.0f}'
+        )
+
+
 class SaleForm(forms.ModelForm):
-    property = forms.CharField(
-        label='House ID',
-        help_text='Search or enter the generated House ID, for example LGS-000001.',
-        widget=forms.TextInput(attrs={
-            'list': 'house-id-options',
-            'placeholder': 'Search by House ID',
-            'autocomplete': 'off',
-        }),
+    property = SalePropertyChoiceField(
+        queryset=Property.objects.none(),
+        label='Sale property',
+        empty_label='Choose an available property',
+        help_text='Available sale listings across the team portfolio.',
     )
 
     def __init__(self, *args, **kwargs):
@@ -24,19 +29,8 @@ class SaleForm(forms.ModelForm):
         )
         if self.instance.pk and self.instance.property_id:
             available = available | Property.objects.filter(pk=self.instance.property_id)
-            self.initial['property'] = self.instance.property.house_id
-        self.available_properties = available.select_related('agent').order_by('pk').distinct()
-
-    def clean_property(self):
-        value = self.cleaned_data['property'].strip().upper()
-        match = re.fullmatch(r'LGS-(\d+)', value)
-        if not match:
-            raise forms.ValidationError('Enter a House ID in the format LGS-000001.')
-
-        property_obj = Property.objects.filter(pk=int(match.group(1))).first()
-        if property_obj is None or not self.available_properties.filter(pk=property_obj.pk).exists():
-            raise forms.ValidationError('No available sale property matches that House ID.')
-        return property_obj
+        self.fields['property'].queryset = available.select_related('agent').order_by('pk').distinct()
+        self.available_properties = self.fields['property'].queryset
 
     class Meta:
         model = Sale
@@ -51,10 +45,6 @@ class SaleForm(forms.ModelForm):
         ]
 
         widgets = {
-            'sale_date': forms.DateInput(
-                attrs={'type': 'date'}
-            ),
-            'notes': forms.Textarea(
-                attrs={'rows': 3}
-            ),
+            'sale_date': forms.DateInput(attrs={'type': 'date'}),
+            'notes': forms.Textarea(attrs={'rows': 3}),
         }

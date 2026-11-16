@@ -1,2 +1,48 @@
-{% load static %}<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My workspace | LGS Cambodia</title><link rel="stylesheet" href="{% static 'css/style.css' %}"><style>body{margin:0;background:#f4f7fc;color:#17243a;font-family:Inter,system-ui,sans-serif}.agent-page{max-width:1200px;margin:auto;padding:34px 22px}.agent-nav{display:flex;align-items:center;justify-content:space-between;background:#142238;color:white;padding:17px 22px;border-radius:14px;margin-bottom:30px}.agent-nav strong{letter-spacing:.1em}.agent-nav span{color:#8cb8ff}.agent-nav-links{display:flex;gap:18px;flex-wrap:wrap}.agent-nav a{color:#d9e3f1;text-decoration:none;font-size:13px;font-weight:650}.welcome{background:linear-gradient(120deg,#267eff,#145bc3);color:white;padding:30px;border-radius:16px;margin-bottom:20px}.welcome h1{margin:0 0 7px;font-size:28px;letter-spacing:-.04em}.welcome p{margin:0;color:#e3efff}.agent-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.agent-stat{background:#fff;padding:21px;border-radius:13px;border:1px solid #e7edf4}.agent-stat small{color:#718096;font-weight:700}.agent-stat strong{display:block;font-size:30px;margin-top:10px}.agent-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.agent-action{background:white;padding:20px;border-radius:13px;border:1px solid #e7edf4;text-decoration:none;color:#17243a;font-weight:750}.agent-action p{font-size:13px;color:#718096;font-weight:400;line-height:1.5}@media(max-width:700px){.agent-nav{align-items:flex-start;flex-direction:column;gap:15px}.agent-grid{grid-template-columns:repeat(2,1fr)}.agent-actions{grid-template-columns:1fr}}
-</style></head><body><main class="agent-page"><nav class="agent-nav"><strong>LGS <span>CAMBODIA</span></strong><div class="agent-nav-links"><a href="{% url 'agent_dashboard' %}">My workspace</a><a href="{% url 'customer_list' %}">Customers</a><a href="{% url 'property_list' %}">Properties</a><a href="{% url 'sale_list' %}">Sales</a><a href="{% url 'rental_list' %}">Rentals</a><a href="{% url 'logout' %}">Sign out</a></div></nav><section class="welcome"><h1>Good to see you, {{ request.user.first_name|default:request.user.username }}</h1><p>Your personal pipeline and listings in one place.</p></section><section class="agent-grid"><article class="agent-stat"><small>My customers</small><strong>{{ total_customers|default:0 }}</strong></article><article class="agent-stat"><small>My properties</small><strong>{{ total_properties|default:0 }}</strong></article><article class="agent-stat"><small>My sales</small><strong>{{ total_sales|default:0 }}</strong></article><article class="agent-stat"><small>My rentals</small><strong>{{ total_rentals|default:0 }}</strong></article></section><section class="agent-actions"><a class="agent-action" href="{% url 'customer_add' %}">Add customer<p>Capture a new buyer, tenant or owner lead.</p></a><a class="agent-action" href="{% url 'property_add' %}">Add property<p>Create a sale or rental listing for your portfolio.</p></a><a class="agent-action" href="{% url 'sale_add' %}">Record a sale<p>Keep a property transaction up to date.</p></a></section></main></body></html>
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sales workspace | LGS Cambodia</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        *{box-sizing:border-box}body{margin:0;background:#f4f7fc;color:#17243a;font-family:Inter,system-ui,sans-serif}.agent-page{width:min(1200px,100%);margin:auto;padding:28px 22px 48px}.agent-nav{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#142238;color:white;padding:16px 20px;border-radius:14px;margin-bottom:28px}.agent-nav strong{white-space:nowrap;letter-spacing:.1em}.agent-nav strong span{color:#8cb8ff}.agent-nav-links{display:flex;gap:8px;flex-wrap:wrap}.agent-nav a{color:#d9e3f1;text-decoration:none;font-size:13px;font-weight:650;padding:9px 11px;border-radius:8px}.agent-nav a:hover,.agent-nav a.active{background:#ffffff18;color:white}.welcome{display:flex;justify-content:space-between;align-items:center;gap:24px;background:linear-gradient(120deg,#17345c,#267eff);color:white;padding:30px;border-radius:16px;margin-bottom:18px;box-shadow:0 12px 32px #15417620}.welcome-copy{max-width:650px}.eyebrow{color:#dbeaff;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.welcome h1{margin:8px 0;font-size:clamp(25px,4vw,34px);letter-spacing:-.04em}.welcome p{margin:0;color:#e3efff;line-height:1.55}.welcome-action{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 16px;background:#fff;color:#1f5ead;border-radius:9px;text-decoration:none;font-weight:800}.agent-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.agent-stat{background:#fff;padding:20px;border-radius:13px;border:1px solid #e7edf4;box-shadow:0 5px 20px #17345508}.agent-stat small{color:#718096;font-weight:700}.agent-stat strong{display:block;font-size:29px;margin-top:11px;letter-spacing:-.04em}.agent-stat a{color:inherit;text-decoration:none}.agent-stat .blue{color:#267eff}.agent-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.agent-action{display:block;background:#fff;padding:21px;border-radius:13px;border:1px solid #e7edf4;text-decoration:none;color:#17243a;font-weight:800;box-shadow:0 5px 20px #17345508;transition:transform .16s,border-color .16s}.agent-action:hover{transform:translateY(-2px);border-color:#b7d1fa}.agent-action span{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;margin-bottom:15px;border-radius:10px;background:#eaf2ff;color:#267eff}.agent-action p{margin:7px 0 0;font-size:13px;color:#718096;font-weight:400;line-height:1.5}.agent-note{margin-top:18px;padding:15px 17px;border:1px solid #dce8f7;border-radius:11px;background:#edf4ff;color:#52627a;font-size:13px;line-height:1.5}.agent-note strong{color:#26374e}@media(max-width:800px){.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.agent-actions{grid-template-columns:1fr 1fr}.welcome{align-items:flex-start;flex-direction:column}}@media(max-width:600px){.agent-page{padding:14px 13px 32px}.agent-nav{align-items:flex-start;flex-direction:column;gap:10px;padding:14px;border-radius:12px;margin-bottom:18px}.agent-nav-links{gap:4px}.agent-nav a{padding:8px;font-size:12px}.welcome{padding:23px}.welcome-action{width:100%}.agent-grid{gap:9px}.agent-stat{padding:15px}.agent-stat strong{font-size:25px}.agent-actions{grid-template-columns:1fr}.agent-action{padding:17px}}
+    </style>
+</head>
+<body>
+<main class="agent-page">
+    <nav class="agent-nav" aria-label="Sales workspace navigation">
+        <strong>LGS <span>CAMBODIA</span></strong>
+        <div class="agent-nav-links">
+            <a class="active" href="{% url 'agent_dashboard' %}">Overview</a>
+            <a href="{% url 'property_list' %}">Properties</a>
+            <a href="{% url 'customer_list' %}">Customers</a>
+            <a href="{% url 'sale_list' %}">Sales</a>
+            <a href="{% url 'rental_list' %}">Rentals</a>
+            <a href="{% url 'logout' %}">Sign out</a>
+        </div>
+    </nav>
+    <section class="welcome">
+        <div class="welcome-copy">
+            <span class="eyebrow">Sales agent workspace</span>
+            <h1>Welcome back, {{ request.user.first_name|default:request.user.username }}</h1>
+            <p>Browse the shared property portfolio, support your clients, and keep each transaction moving.</p>
+        </div>
+        <a class="welcome-action" href="{% url 'property_list' %}">Browse properties&nbsp; →</a>
+    </section>
+    <section class="agent-grid" aria-label="Sales overview">
+        <article class="agent-stat"><small>Available properties</small><strong class="blue"><a href="{% url 'property_list' %}?status=AVAILABLE">{{ available_properties|default:0 }}</a></strong></article>
+        <article class="agent-stat"><small>My customers</small><strong>{{ total_customers|default:0 }}</strong></article>
+        <article class="agent-stat"><small>My sales</small><strong>{{ total_sales|default:0 }}</strong></article>
+        <article class="agent-stat"><small>Pending payments</small><strong>{{ pending_sales|default:0 }}</strong></article>
+    </section>
+    <section class="agent-actions" aria-label="Sales actions">
+        <a class="agent-action" href="{% url 'property_list' %}"><span>⌂</span>Browse property portfolio<p>View all listings uploaded by the property team and find a match for your client.</p></a>
+        <a class="agent-action" href="{% url 'sale_add' %}"><span>↗</span>Record a sale<p>Choose an available House ID, select your customer, and save the deal details.</p></a>
+        <a class="agent-action" href="{% url 'customer_add' %}"><span>＋</span>Add a customer<p>Capture a new buyer, tenant, or owner lead in your client list.</p></a>
+    </section>
+    <div class="agent-note"><strong>Property access:</strong> Sales agents can view the shared portfolio and record sales. Listing creation and editing stay with administrators and property managers.</div>
+</main>
+</body>
+</html>

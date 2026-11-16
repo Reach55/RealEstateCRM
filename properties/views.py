@@ -13,7 +13,7 @@ from django.contrib.auth import get_user_model
 def property_list(request):
 
     properties = Property.objects.all().order_by('-created_at')
-    if not (request.user.is_superuser or getattr(request.user, 'role', '') == 'ADMIN'):
+    if getattr(request.user, 'role', '') == 'PROPERTY':
         properties = properties.filter(agent=request.user)
 
     filters = {
@@ -120,6 +120,9 @@ def property_list(request):
 @login_required
 def property_add(request):
 
+    if getattr(request.user, 'role', '') == 'AGENT' and not request.user.is_superuser:
+        raise PermissionDenied
+
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES)
 
@@ -144,6 +147,8 @@ def property_add(request):
 @login_required
 def property_edit(request, pk):
 
+    if getattr(request.user, 'role', '') == 'AGENT' and not request.user.is_superuser:
+        raise PermissionDenied
     if getattr(request.user, 'role', '') == 'PROPERTY':
         raise PermissionDenied
 
@@ -177,6 +182,8 @@ def property_edit(request, pk):
 @login_required
 def property_delete(request, pk):
 
+    if getattr(request.user, 'role', '') == 'AGENT' and not request.user.is_superuser:
+        raise PermissionDenied
     if getattr(request.user, 'role', '') == 'PROPERTY':
         raise PermissionDenied
 
@@ -197,6 +204,8 @@ def property_delete(request, pk):
 
 @login_required
 def property_interested_customers(request, pk):
+    if getattr(request.user, 'role', '') == 'AGENT' and not request.user.is_superuser:
+        raise PermissionDenied
     if getattr(request.user, 'role', '') == 'PROPERTY':
         raise PermissionDenied
 

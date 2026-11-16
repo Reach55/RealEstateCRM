@@ -38,7 +38,8 @@ def agent_dashboard(request):
 
     return render(request, 'dashboard/agent_dashboard.html', {
         'total_customers': Customer.objects.filter(assigned_agent=request.user).count(),
-        'total_properties': Property.objects.filter(agent=request.user).count(),
+        'available_properties': Property.objects.filter(status='AVAILABLE').count(),
         'total_sales': Sale.objects.filter(agent=request.user).count(),
+        'pending_sales': Sale.objects.filter(agent=request.user, payment_status='PENDING').count(),
         'total_rentals': Rental.objects.filter(agent=request.user).count(),
     })
