@@ -17,7 +17,9 @@
   </style>
 </head>
 <body>
-  <nav class="detail-nav"><a class="brand" href="/">LGS <span>CAMBODIA</span></a><a class="back-link" href="{% url 'property_search' %}">Browse all properties</a></nav>
+{% include 'partials/site_header.html' %}
+
+
   <main class="detail-page">
     <section class="gallery" aria-label="Property photo gallery">
       <div class="gallery-main">{% if gallery_photos %}<img id="main-photo" src="{{ gallery_photos.0.url }}" alt="{{ gallery_photos.0.caption }}">{% else %}<div class="empty-gallery">Photos for this property are coming soon.</div>{% endif %}{% if gallery_photos|length > 1 %}<span class="gallery-count"><span id="photo-index">1</span> / {{ gallery_photos|length }} photos</span>{% endif %}</div>

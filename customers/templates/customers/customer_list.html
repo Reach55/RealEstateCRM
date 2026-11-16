@@ -367,6 +367,8 @@
 </head>
 
 <body>
+{% include 'partials/site_header.html' %}
+
 
 {% if request.user.role == 'PROPERTY' %}
 <nav style="display:flex;gap:18px;flex-wrap:wrap;background:#142238;padding:16px 4%;">

@@ -1,0 +1,38 @@
+<style>
+  .global-site-header{position:relative;z-index:20;grid-column:1/-1;background:#fff8e8;color:#17243a;border-bottom:1px solid #f0e5c8;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+  .global-site-header *{box-sizing:border-box}
+  .global-site-header__inner{width:min(1500px,100% - 48px);min-height:78px;margin:auto;display:grid;grid-template-columns:150px minmax(0,1fr) auto;align-items:center;gap:28px}
+  .global-site-header__brand{display:flex;flex-direction:column;width:max-content;color:#17243a;text-decoration:none;line-height:.9}
+  .global-site-header__brand strong{font-size:30px;letter-spacing:-.06em;font-weight:900}
+  .global-site-header__brand small{margin-top:5px;color:#a7832b;font-size:9px;font-style:italic;letter-spacing:.04em;text-align:center}
+  .global-site-header__links{display:flex;align-items:center;justify-content:center;gap:clamp(16px,3vw,44px);min-width:0}
+  .global-site-header__links a,.global-site-header__actions a{color:#b67600;text-decoration:none;text-transform:uppercase;white-space:nowrap;font-size:13px;font-weight:700;letter-spacing:.035em}
+  .global-site-header__links a:hover,.global-site-header__actions a:hover{color:#267eff}
+  .global-site-header__actions{display:flex;align-items:center;gap:20px}
+  .global-site-header__phone{display:flex;align-items:center;gap:8px;font-size:15px!important}
+  .global-site-header__account{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:2px solid #d18a00;border-radius:50%;font-size:18px!important;line-height:1}
+  @media(max-width:920px){.global-site-header__inner{grid-template-columns:1fr auto;gap:8px 20px;padding:12px 0}.global-site-header__links{grid-column:1/-1;grid-row:2;justify-content:flex-start;overflow-x:auto;padding:5px 0 8px;gap:24px;scrollbar-width:none}.global-site-header__links::-webkit-scrollbar{display:none}.global-site-header__actions{grid-column:2;grid-row:1}.global-site-header__brand strong{font-size:27px}}
+  @media(max-width:480px){.global-site-header__inner{width:calc(100% - 28px)}.global-site-header__phone{font-size:0!important;gap:0}.global-site-header__phone span{font-size:20px}.global-site-header__actions{gap:12px}.global-site-header__links{gap:21px}.global-site-header__links a{font-size:12px}}
+</style>
+<header class="global-site-header">
+  <div class="global-site-header__inner">
+    <a class="global-site-header__brand" href="/" aria-label="LGS Cambodia home"><strong>LGS</strong><small>Real Estate</small></a>
+    <nav class="global-site-header__links" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="{% url 'property_search' %}?listing_type=SALE">Buy</a>
+      <a href="{% url 'property_search' %}?listing_type=RENT">Rent</a>
+      <a href="/#services">Services</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <div class="global-site-header__actions">
+      <a class="global-site-header__phone" href="tel:+85578823833"><span aria-hidden="true">☎</span> +855 78 823 833</a>
+      {% if request.user.is_authenticated %}
+        {% if request.user.role == 'ADMIN' %}<a class="global-site-header__account" href="{% url 'admin_dashboard' %}" aria-label="Open workspace">♙</a>
+        {% elif request.user.role == 'PROPERTY' %}<a class="global-site-header__account" href="{% url 'property_list' %}" aria-label="Open workspace">♙</a>
+        {% else %}<a class="global-site-header__account" href="{% url 'agent_dashboard' %}" aria-label="Open workspace">♙</a>{% endif %}
+      {% else %}
+        <a class="global-site-header__account" href="{% url 'login' %}" aria-label="Team login">♙</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
