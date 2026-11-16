@@ -1,20 +1,20 @@
 <style>
-  .global-site-header{position:relative;z-index:20;background:#fff8e8;color:#17243a;border-bottom:1px solid #eee2c4;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+  .global-site-header{position:relative;z-index:20;background:#fff;color:#17243a;border-bottom:1px solid #e7edf5;box-shadow:0 4px 18px #17243a08;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
   .global-site-header *{box-sizing:border-box}
   .global-site-header__inner{width:min(1780px,100% - 64px);min-height:94px;margin:auto;display:grid;grid-template-columns:170px minmax(0,1fr) auto;align-items:center;gap:clamp(20px,3vw,56px)}
   .global-site-header__brand{display:flex;align-items:center;gap:9px;width:max-content;color:#17243a;text-decoration:none}
   .global-site-header__mark{width:48px;height:60px;display:block;flex:none}
   .global-site-header__wordmark{display:flex;flex-direction:column;line-height:.92}
   .global-site-header__wordmark strong{font-size:22px;letter-spacing:.08em;font-weight:900}
-  .global-site-header__wordmark small{margin-top:5px;color:#977225;font-size:9px;font-style:italic;letter-spacing:.08em}
+  .global-site-header__wordmark small{margin-top:5px;color:#267eff;font-size:9px;font-style:italic;letter-spacing:.08em}
   .global-site-header__links{display:flex;align-items:center;justify-content:space-between;gap:clamp(14px,2.5vw,42px);min-width:0}
-  .global-site-header__links a,.global-site-header__actions a,.global-site-header__language{color:#bd7900;text-decoration:none;text-transform:uppercase;white-space:nowrap;font-size:12px;font-weight:650;letter-spacing:.045em;transition:color .18s ease}
+  .global-site-header__links a,.global-site-header__actions a,.global-site-header__language{color:#34445b;text-decoration:none;text-transform:uppercase;white-space:nowrap;font-size:12px;font-weight:650;letter-spacing:.045em;transition:color .18s ease}
   .global-site-header__links a:hover,.global-site-header__actions a:hover,.global-site-header__language:hover{color:#267eff}
   .global-site-header__actions{display:flex;align-items:center;justify-content:flex-end;gap:clamp(14px,2vw,30px)}
   .global-site-header__language{display:inline-flex;align-items:center;gap:7px}.global-site-header__flag{font-size:18px;line-height:1}.global-site-header__chevron{font-size:15px;line-height:1}
   .global-site-header__phone{display:flex;align-items:center;gap:8px;font-size:14px!important;font-weight:750!important}
   .global-site-header__phone svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
-  .global-site-header__account{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:1.8px solid currentColor;border-radius:50%}
+  .global-site-header__account{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1.8px solid #267eff;border-radius:50%;color:#267eff}
   .global-site-header__account svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
   @media(max-width:1180px){.global-site-header__inner{width:calc(100% - 40px);grid-template-columns:130px minmax(0,1fr) auto;gap:20px}.global-site-header__links{gap:18px}.global-site-header__language{display:none}}
   @media(max-width:900px){.global-site-header__inner{width:calc(100% - 32px);min-height:86px;grid-template-columns:1fr auto;gap:4px 16px;padding:11px 0 8px}.global-site-header__links{grid-column:1/-1;grid-row:2;justify-content:flex-start;overflow-x:auto;overscroll-behavior-x:contain;padding:8px 1px 9px;gap:clamp(22px,5vw,44px);scrollbar-width:none;-webkit-overflow-scrolling:touch}.global-site-header__links::-webkit-scrollbar{display:none}.global-site-header__actions{grid-column:2;grid-row:1;gap:18px}.global-site-header__brand{gap:6px}.global-site-header__mark{width:39px;height:48px}.global-site-header__wordmark strong{font-size:20px}.global-site-header__links a{font-size:12px}}
@@ -23,7 +23,7 @@
 <header class="global-site-header">
   <div class="global-site-header__inner">
     <a class="global-site-header__brand" href="/" aria-label="LGS Cambodia home">
-      <svg class="global-site-header__mark" viewBox="0 0 52 64" aria-hidden="true"><path d="M6 55h40M12 55V31l8-8v32m0-25 8-9 9 9v25m-9-18h9m-9 8h9M3 58h46" fill="none" stroke="#17243a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 23V12m8 1V5m9 18V12" fill="none" stroke="#bd8a1a" stroke-width="2" stroke-linecap="round"/><path d="M6 60h40" stroke="#bd8a1a" stroke-width="1.2"/></svg>
+      <svg class="global-site-header__mark" viewBox="0 0 52 64" aria-hidden="true"><path d="M6 55h40M12 55V31l8-8v32m0-25 8-9 9 9v25m-9-18h9m-9 8h9M3 58h46" fill="none" stroke="#17243a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 23V12m8 1V5m9 18V12" fill="none" stroke="#267eff" stroke-width="2" stroke-linecap="round"/><path d="M6 60h40" stroke="#267eff" stroke-width="1.2"/></svg>
       <span class="global-site-header__wordmark"><strong>LGS</strong><small>Real Estate</small></span>
     </a>
     <nav class="global-site-header__links" aria-label="Main navigation">
