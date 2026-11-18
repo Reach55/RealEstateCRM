@@ -721,6 +721,14 @@ body {
     box-shadow: 0 5px 20px rgba(20, 40, 80, 0.05);
 }
 
+.table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .customer-table {
     width: 100%;
     border-collapse: collapse;
