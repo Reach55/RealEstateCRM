@@ -14,30 +14,7 @@
             background: #f4f6fa;
         }
 
-        .sidebar {
-            position: fixed;
-            width: 240px;
-            height: 100vh;
-            background: #267eff;
-            color: white;
-            padding: 25px 18px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 14px;
-            margin-top: 8px;
-            border-radius: 7px;
-        }
-
-        .sidebar a:hover {
-            background: #1764d1;
-        }
-
         .main {
-            margin-left: 240px;
             padding: 30px;
         }
 
@@ -66,27 +43,13 @@
             border-radius: 6px;
         }
 
-        @media(max-width: 800px) {
-            .sidebar { width: 180px; }
-            .main { margin-left: 180px; }
-        }
+        @media(max-width: 800px) { .main { padding: 18px; } }
     </style>
 </head>
 
 <body>
 {% include 'partials/site_header.html' %}
 
-
-<div class="sidebar">
-    <h2>REAL ESTATE CRM</h2>
-    <hr>
-
-    <a href="{% url 'agent_dashboard' %}">Dashboard</a>
-    <a href="{% url 'customer_list' %}">My Customers</a>
-    <a href="{% url 'property_list' %}">Properties</a>
-    <a href="{% url 'sale_list' %}">My Sales</a>
-    <a href="{% url 'agent_report' %}">My Reports</a>
-</div>
 
 <div class="main">
 

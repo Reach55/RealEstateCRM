@@ -1,4 +1,15 @@
 <style>
+  .agency-header{position:relative;z-index:20;background:#14233a;color:#fff;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+  .agency-header *{box-sizing:border-box}
+  .agency-header__inner{width:calc(100% - 48px);min-height:92px;margin:auto;display:flex;align-items:center;gap:clamp(24px,4vw,60px)}
+  .agency-header__brand{flex:none;color:#fff;text-decoration:none;font-size:clamp(24px,3vw,38px);font-weight:900;letter-spacing:.055em;white-space:nowrap}
+  .agency-header__brand span{color:#70a4ff}
+  .agency-header__nav{display:flex;align-items:center;gap:clamp(8px,1.4vw,22px);overflow-x:auto;scrollbar-width:none;min-width:0}
+  .agency-header__nav::-webkit-scrollbar{display:none}
+  .agency-header__nav a,.agency-header__signout{flex:none;color:#c7d0df;text-decoration:none;font-size:clamp(15px,1.8vw,22px);font-weight:700;padding:25px 20px;border-radius:22px;white-space:nowrap}
+  .agency-header__nav a:hover,.agency-header__nav a.is-active{background:#29374e;color:#fff}
+  .agency-header__signout{margin-left:auto;padding:12px 16px;font-size:14px;border:1px solid #43516a}
+  @media(max-width:760px){.agency-header__inner{width:calc(100% - 24px);min-height:0;display:block;padding:12px 0 8px}.agency-header__brand{display:block;font-size:25px;margin:1px 4px 8px}.agency-header__nav{gap:4px}.agency-header__nav a{padding:13px 16px;border-radius:18px;font-size:16px}.agency-header__signout{position:absolute;right:0;top:12px;padding:8px 10px}.agency-header__nav{padding-right:82px}}
   .global-site-header{position:relative;z-index:20;background:#fff;color:#17243a;border-bottom:1px solid #e7edf5;box-shadow:0 4px 18px #17243a08;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
   .global-site-header *{box-sizing:border-box}
   .global-site-header__inner{width:min(1780px,100% - 64px);min-height:94px;margin:auto;display:grid;grid-template-columns:170px minmax(0,1fr) auto;align-items:center;gap:clamp(20px,3vw,56px)}
@@ -20,6 +31,25 @@
   @media(max-width:900px){.global-site-header__inner{width:calc(100% - 32px);min-height:86px;grid-template-columns:1fr auto;gap:4px 16px;padding:11px 0 8px}.global-site-header__links{grid-column:1/-1;grid-row:2;justify-content:flex-start;overflow-x:auto;overscroll-behavior-x:contain;padding:8px 1px 9px;gap:clamp(22px,5vw,44px);scrollbar-width:none;-webkit-overflow-scrolling:touch}.global-site-header__links::-webkit-scrollbar{display:none}.global-site-header__actions{grid-column:2;grid-row:1;gap:18px}.global-site-header__brand{gap:6px}.global-site-header__mark{width:39px;height:48px}.global-site-header__wordmark strong{font-size:20px}.global-site-header__links a{font-size:12px}}
   @media(max-width:520px){.global-site-header__inner{width:calc(100% - 28px);min-height:78px}.global-site-header__mark{width:34px;height:43px}.global-site-header__wordmark strong{font-size:18px}.global-site-header__wordmark small{font-size:8px}.global-site-header__actions{gap:12px}.global-site-header__phone{font-size:0!important;gap:0}.global-site-header__phone svg{width:21px;height:21px}.global-site-header__account{width:32px;height:32px}.global-site-header__links{gap:25px}.global-site-header__links a{font-size:11px}}
 </style>
+{% if request.user.is_authenticated %}
+  {% if request.user.role == 'ADMIN' %}{% url 'admin_dashboard' as agency_overview %}
+  {% elif request.user.role == 'PROPERTY' %}{% url 'property_list' as agency_overview %}
+  {% else %}{% url 'agent_dashboard' as agency_overview %}{% endif %}
+  <header class="agency-header">
+    <div class="agency-header__inner">
+      <a class="agency-header__brand" href="{{ agency_overview }}" aria-label="LGS Cambodia overview">LGS <span>CAMBODIA</span></a>
+      <nav class="agency-header__nav" aria-label="Agency navigation">
+        <a class="{% if request.resolver_match.url_name == 'admin_dashboard' or request.resolver_match.url_name == 'agent_dashboard' %}is-active{% endif %}" href="{{ agency_overview }}">Overview</a>
+        <a class="{% if request.resolver_match.url_name|slice:":8" == 'customer' %}is-active{% endif %}" href="{% url 'customer_list' %}">Customers</a>
+        <a class="{% if request.resolver_match.url_name|slice:":8" == 'property' %}is-active{% endif %}" href="{% url 'property_list' %}">Properties</a>
+        <a class="{% if request.resolver_match.url_name|slice:":4" == 'sale' %}is-active{% endif %}" href="{% url 'sale_list' %}">Sales</a>
+        <a class="{% if request.resolver_match.url_name|slice:":6" == 'rental' %}is-active{% endif %}" href="{% url 'rental_list' %}">Rentals</a>
+        <a class="{% if request.resolver_match.url_name|slice:":6" == 'agent_' or request.resolver_match.url_name == 'property_report' %}is-active{% endif %}" href="{% url 'agent_report' %}">Reports</a>
+      </nav>
+      <a class="agency-header__signout" href="{% url 'logout' %}">Sign out</a>
+    </div>
+  </header>
+{% else %}
 <header class="global-site-header">
   <div class="global-site-header__inner">
     <a class="global-site-header__brand" href="/" aria-label="LGS Cambodia home">
@@ -48,3 +78,4 @@
     </div>
   </div>
 </header>
+{% endif %}
