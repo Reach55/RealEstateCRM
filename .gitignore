@@ -14,6 +14,8 @@ db.sqlite3
 db.sqlite3-*
 media/*
 !media/.gitkeep
+!media/team/
+!media/team/*
 staticfiles/
 
 .pytest_cache/

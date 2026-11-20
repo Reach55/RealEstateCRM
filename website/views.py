@@ -2,6 +2,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from properties.models import Property
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import TeamMember
 
 
 def home(request):
@@ -11,6 +14,63 @@ def home(request):
         'featured_properties': featured_properties,
         'sold_properties': sold_properties,
     })
+
+
+def team(request):
+    return render(request, 'website/team.html', {
+        'team_members': TeamMember.objects.filter(is_active=True),
+    })
+
+
+def _is_team_admin(user):
+    return user.is_superuser or getattr(user, 'role', '') == 'ADMIN'
+
+
+@login_required
+def team_manage(request):
+    if not _is_team_admin(request.user):
+        return redirect('admin_dashboard')
+    return render(request, 'website/team_manage.html', {
+        'team_members': TeamMember.objects.all(),
+    })
+
+
+@login_required
+def team_member_edit(request, pk=None):
+    if not _is_team_admin(request.user):
+        return redirect('admin_dashboard')
+    member = get_object_or_404(TeamMember, pk=pk) if pk else None
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        role = request.POST.get('role', '').strip()
+        photo = request.FILES.get('photo')
+        if not name or not role or (member is None and not photo):
+            messages.error(request, 'Name and role are required. Please choose a photo for new members.')
+        else:
+            if member is None:
+                member = TeamMember()
+            member.name = name
+            member.role = role
+            member.bio = request.POST.get('bio', '').strip()
+            member.display_order = request.POST.get('display_order') or 0
+            member.is_active = request.POST.get('is_active') == 'on'
+            if photo:
+                member.photo = photo
+            member.save()
+            messages.success(request, f'{member.name} saved.')
+            return redirect('team_manage')
+    return render(request, 'website/team_member_form.html', {'member': member})
+
+
+@login_required
+def team_member_delete(request, pk):
+    if not _is_team_admin(request.user):
+        return redirect('admin_dashboard')
+    member = get_object_or_404(TeamMember, pk=pk)
+    if request.method == 'POST':
+        member.delete()
+        messages.success(request, 'Team member removed.')
+    return redirect('team_manage')
 
 
 def property_search(request):
