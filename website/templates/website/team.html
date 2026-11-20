@@ -41,7 +41,8 @@
     .team-member__role{margin:0;color:var(--team-accent);font-size:14px;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
     .team-member__rule{width:40px;height:2px;margin:15px auto;background:var(--team-accent)}
     .team-member__note{max-width:390px;margin:0 auto;color:var(--team-muted);font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.6}
-    .team-bottom{padding:25px 24px 40px;border-top:1px solid var(--team-line);text-align:center;color:#7a8492;font-size:12px;letter-spacing:.04em}
+    .team-bottom{padding:25px 24px 40px;border-top:1px solid var(--team-line);display:flex;justify-content:center}
+    .team-bottom__logo{width:115px;height:92px;object-fit:cover;object-position:center 25%}
     @media(max-width:850px){.team-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
     @media(max-width:560px){.team-intro{padding:54px 22px 22px}.team-intro p{font-size:15px}.team-list{grid-template-columns:1fr;padding:16px 22px 54px;max-width:420px}.team-member__portrait{aspect-ratio:4/5}.team-member__copy{padding:16px 5px 26px}.team-member h2{margin-top:10px}.team-member__note{font-size:16px}.team-bottom{padding-bottom:28px}}
   </style>
@@ -67,6 +68,6 @@
       </article>{% empty %}<p style="text-align:center;color:#657287">Our team profiles will be added soon.</p>{% endfor %}
     </section>
   </main>
-  <footer class="team-bottom">LGS Cambodia Real Estate</footer>
+  <footer class="team-bottom"><img class="team-bottom__logo" src="{% static 'images/lgs-real-estate-logo.png' %}" alt="LGS Real Estate"></footer>
 </body>
 </html>
