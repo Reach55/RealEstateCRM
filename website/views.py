@@ -4,6 +4,7 @@ from properties.models import Property
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.templatetags.static import static
 from .models import TeamMember
 
 
@@ -19,6 +20,8 @@ def home(request):
 def team(request):
     return render(request, 'website/team.html', {
         'team_members': TeamMember.objects.filter(is_active=True),
+        'team_share_url': request.build_absolute_uri(),
+        'team_share_image': request.build_absolute_uri(static('images/team/yun-raksmey.png')),
     })
 
 
